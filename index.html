@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>شطرنج ♟️</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- خلفية متحركة -->
+  <div class="bg"></div>
+
+  <main class="shell">
+    <header class="topbar">
+      <h1> شطرنج♟️ </h1>
+      <div class="controls">
+        <button id="newGameBtn" class="btn">لعبة جديدة</button>
+        <button id="undoBtn" class="btn">تراجع</button>
+        <button id="flipBtn" class="btn">تدوير اللوح</button>
+        <select id="startFen" class="select">
+          <option value="start">الوضع القياسي</option>
+          <option value="rnbqkbnr/pppp1ppp/8/4p3/3P4/5N2/PPP1PPPP/RNBQKB1R b KQkq - 1 2">حالة مثال</option>
+        </select>
+        <button id="themeToggleBtn" class="btn">🌙 تبديل الوضع</button>
+      </div>
+    </header>
+
+    <section class="game-wrap">
+      <aside class="side-panel glass">
+        <div class="status">
+          <div><strong>الدور:</strong> <span id="turnLabel">الأبيض</span></div>
+          <div><strong>الحالة:</strong> <span id="stateLabel">—</span></div>
+        </div>
+
+        <div class="legend">
+          <div><span class="dot dot-move"></span> حركة متاحة</div>
+          <div><span class="dot dot-capture"></span> أكل</div>
+          <div><span class="dot dot-check"></span> كش</div>
+        </div>
+
+        <div class="moves">
+          <h3>قائمة النقلات</h3>
+          <ol id="moveList"></ol>
+        </div>
+      </aside>
+
+      <div class="board-wrap glass">
+        <div id="board" class="board" aria-label="لوح الشطرنج" role="grid"></div>
+      </div>
+    </section>
+
+   <footer class="foot glass">
+  <p class="foot-text">✨ العب بذكاء، وامرح مع كل نقلة! ♟️</p>
+      </footer>
+
+  </main>
+
+  <!-- نافذة الترقية -->
+  <dialog id="promoDialog" class="promo glass">
+    <form method="dialog" id="promoForm">
+      <h3>اختر ترقية البيادق</h3>
+      <div class="promo-grid">
+        <button value="q" class="promo-btn">♛</button>
+        <button value="r" class="promo-btn">♜</button>
+        <button value="b" class="promo-btn">♝</button>
+        <button value="n" class="promo-btn">♞</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

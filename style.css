@@ -1,0 +1,157 @@
+/* ===== المتغيرات ===== */
+:root{
+  --bg1:#0f172a; --bg2:#020617;
+  --glass: rgba(255,255,255,0.08);
+  --stroke: rgba(255,255,255,0.18);
+  --neon:#7c3aed;
+  --accent:#22d3ee;
+  --danger:#ef4444;
+  --ok:#34d399;
+  --tile-dark:#1f2937;
+  --tile-light:#334155;
+  --tile-hover: rgba(124,58,237,0.25);
+  --hl-move: rgba(34,211,238,0.35);
+  --hl-capture: rgba(239,68,68,0.35);
+  --shadow-xl: 0 10px 30px rgba(0,0,0,0.45);
+}
+
+/* ===== الوضع الفاتح ===== */
+:root[data-theme='light']{
+  --bg1:#f8fafc; --bg2:#e2e8f0;
+  --glass: rgba(255,255,255,0.2);
+  --stroke: rgba(0,0,0,0.12);
+  --neon:#6366f1;
+  --accent:#06b6d4;
+  --danger:#dc2626;
+  --ok:#10b981;
+  --tile-dark:#94a3b8;
+  --tile-light:#f1f5f9;
+  --tile-hover: rgba(99,102,241,0.25);
+  --hl-move: rgba(6,182,212,0.35);
+  --hl-capture: rgba(220,38,38,0.35);
+  color:#111827;
+}
+
+/* ===== الأساسيات ===== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Cairo, "Noto Sans Arabic", sans-serif;
+  color:inherit; background: radial-gradient(1200px 800px at 10% 10%, var(--bg1), var(--bg2));
+  overflow-x:hidden;
+}
+
+.bg{
+  position:fixed; inset:0;
+  background:
+    radial-gradient(600px 400px at 85% 15%, rgba(124,58,237,0.25), transparent 60%),
+    radial-gradient(800px 550px at 15% 80%, rgba(34,211,238,0.20), transparent 60%),
+    radial-gradient(700px 650px at 80% 85%, rgba(16,185,129,0.18), transparent 60%),
+    linear-gradient(130deg, var(--bg1), var(--bg2));
+  filter:saturate(1.15) brightness(1.05);
+  animation: float 18s ease-in-out infinite alternate;
+  z-index:-1;
+}
+@keyframes float{
+  0%{transform: translateY(0) scale(1)}
+  100%{transform: translateY(-18px) scale(1.01)}
+}
+
+/* ===== حاوية زجاجية ===== */
+.shell{max-width:1200px; margin:32px auto; padding: 0 16px;}
+.glass{background: var(--glass); border:1px solid var(--stroke);
+  box-shadow: var(--shadow-xl), inset 0 1px 0 rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px) saturate(1.2); border-radius:18px;}
+
+.topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px}
+.topbar h1{margin:0; letter-spacing:0.5px; font-weight:800;
+  text-shadow: 0 0 18px var(--neon), 0 0 6px var(--accent);}
+.controls{display:flex; gap:10px; flex-wrap:wrap}
+
+.btn,.select{
+  border:none; cursor:pointer; padding:10px 14px; border-radius:12px;
+  background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(34,211,238,0.20));
+  color:inherit; border:1px solid rgba(255,255,255,0.16);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 6px 16px rgba(0,0,0,0.25);
+  transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+  font-weight:700; backdrop-filter: blur(10px);
+}
+.btn:hover, .select:hover{ transform: translateY(-2px); filter: brightness(1.05)}
+.select{padding:10px 12px}
+
+.game-wrap{display:grid; grid-template-columns: 300px 1fr; gap:18px}
+@media (max-width: 980px){ .game-wrap{grid-template-columns: 1fr;}}
+
+.side-panel{padding:16px}
+.status{display:grid; gap:6px; margin-bottom:14px}
+.legend{display:grid; gap:6px; margin-bottom:18px; opacity:.9}
+.dot{display:inline-block; width:14px; height:14px; border-radius:50%; margin-left:8px; vertical-align:middle}
+.dot-move{ background: var(--hl-move); box-shadow: 0 0 12px var(--accent)}
+.dot-capture{ background: var(--hl-capture); box-shadow: 0 0 12px var(--danger)}
+.dot-check{ background: rgba(255,255,255,0.25); box-shadow: 0 0 12px #fff}
+
+.moves{max-height: 50vh; overflow: auto; padding-right:6px}
+.moves h3{margin: 8px 0 10px}
+#moveList{margin:0; padding:0 18px}
+
+/* ===== اللوح ===== */
+.board-wrap{padding:12px}
+.board{
+  width: min(80vw, 650px); height: min(80vw, 650px);
+  margin:0 auto; display:grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  border-radius:16px; overflow:hidden; position:relative;
+  box-shadow:0 30px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+.square{position:relative; display:flex; align-items:center; justify-content:center;
+  font-size: clamp(34px, 7vw, 58px);
+  user-select:none; cursor:pointer; transition: background .1s ease, transform .05s ease;}
+.square.dark{ background: linear-gradient(180deg, var(--tile-dark), #0b1220)}
+.square.light{ background: linear-gradient(180deg, var(--tile-light), #0d1424)}
+.square:hover{ outline: 2px solid rgba(255,255,255,0.08); background: var(--tile-hover)}
+
+.square.selected{
+  box-shadow: inset 0 0 0 3px var(--neon), inset 0 0 30px rgba(124,58,237,.35);
+  z-index:2;
+}
+
+.square .hint{
+  position:absolute; width:18px; height:18px; border-radius:50%;
+  background: var(--hl-move); box-shadow: 0 0 16px var(--accent), inset 0 0 4px rgba(255,255,255,.35);
+}
+.square.capture .hint{ width:100%; height:100%; border-radius:0; inset:0; background: var(--hl-capture)}
+.square.king-check{ animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse{
+  0%{ box-shadow: inset 0 0 0 2px var(--hl-capture), inset 0 0 30px rgba(239,68,68,.35)}
+  100%{ box-shadow: inset 0 0 0 6px var(--hl-capture), inset 0 0 60px rgba(239,68,68,.25)}
+}
+
+/* ===== الأحرف ===== */
+.piece{
+  filter: drop-shadow(0 2px 12px rgba(0,0,0,.65));
+  text-shadow: 0 4px 18px var(--neon), 0 0 12px var(--accent);
+  transform: translateZ(0);
+}
+.piece.white{ color: #f8fafc }
+:root[data-theme='light'] .piece.white{ color:#111827;}
+.piece.black{ color: #94a3b8 }
+:root[data-theme='light'] .piece.black{ color:#334155;}
+
+/* ===== نافذة الترقية ===== */
+.promo{padding:18px; border-radius:16px; width:min(90vw, 360px);}
+.promo h3{margin-top:0}
+.promo-grid{display:grid; grid-template-columns: repeat(4, 1fr); gap:10px}
+.promo-btn{
+  font-size:36px; padding:10px; border-radius:12px; cursor:pointer;
+  border:1px solid rgba(255,255,255,.15); background: rgba(255,255,255,.05);
+}
+.promo-btn:hover{ transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.35) }
+
+.foot{margin-top:18px; padding:10px 14px; text-align:center; opacity:.9}
+
+/* سكرول لطيف */
+::-webkit-scrollbar{ width:10px; height:10px}
+::-webkit-scrollbar-thumb{ background: linear-gradient(var(--neon), var(--accent)); border-radius:10px}
+::-webkit-scrollbar-track{ background: rgba(255,255,255,.06)}
